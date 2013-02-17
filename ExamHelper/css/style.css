@@ -1,0 +1,22 @@
+﻿
+.question 
+{
+  font-size: 225%;
+}
+
+.positiveResult 
+{
+  font-weight: bold;
+  color: Green;
+}
+
+.negativeResult, .msg
+{
+  font-weight: bold;
+  color: Red;
+}
+
+.providedAnswers
+{
+  background-color: #AAAAAA;
+}

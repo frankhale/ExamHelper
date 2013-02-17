@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<questions>
+
+  <!-- Question Format
+  
+  <question>
+    <text></text>
+    <answers>
+      <answer correct="true"></answer>
+      <answer correct="false"></answer>
+      <answer correct="false"></answer>
+      <answer correct="false"></answer>
+    </answers>
+  </question>
+  
+  -->
+
+  <question>
+		<text>Is C# awesome?</text>
+    <answers>
+      <answer correct="true">Yes</answer>
+      <answer correct="false">No</answer>
+    </answers>
+  </question>
+	
+	<question>
+		<text>Is Visual Basic a crappy language?</text>
+		<answers>
+			<answer correct="true">Yes</answer>
+			<answer correct="false">No</answer>
+		</answers>
+	</question>
+
+	<question>
+		<text>What is 1 + 1</text>
+		<answers>
+			<answer correct="false">-2</answer>
+			<answer correct="false">8</answer>
+			<answer correct="true">2</answer>
+			<answer correct="false">5</answer>
+		</answers>
+	</question>
+
+</questions>
