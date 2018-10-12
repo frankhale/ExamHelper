@@ -23,64 +23,73 @@ using System;
 
 namespace ExamHelper
 {
-	public partial class _Default : System.Web.UI.Page
-	{
-		protected override void OnInit(EventArgs e)
-		{
-			totalQuestions.SubmitAction += new PickTotalQuestions.SubmitActionDelegate(totalQuestions_SubmitAction);
-			totalQuestions.CheckBoxSelectionChangedAction += new PickTotalQuestions.CheckBoxSelectionChangedActionDelegate(totalQuestions_ExamMode);
-		}
+  public partial class _Default : System.Web.UI.Page
+  {
+    protected override void OnInit(EventArgs e)
+    {
+      totalQuestions.SubmitAction += new PickTotalQuestions.SubmitActionDelegate(totalQuestions_SubmitAction);
+      totalQuestions.CheckBoxSelectionChangedAction += new PickTotalQuestions.CheckBoxSelectionChangedActionDelegate(totalQuestions_ExamMode);
+    }
 
-		void totalQuestions_ExamMode(object sender, EventArgs e)
-		{
-			QuizSessionData qd = CreateNewQuizSession();
+    void totalQuestions_ExamMode(object sender, EventArgs e)
+    {
+      QuizSessionData qd = CreateNewQuizSession();
 
-			qd.ExamMode = totalQuestions.ExamMode;
+      qd.ExamMode = totalQuestions.ExamMode;
 
-			if (qd.ExamMode)
-				Response.Redirect("AskQuestion.aspx");
-			else
-				Response.Redirect("Default.aspx");
-		}
+      if (qd.ExamMode)
+      {
+        Response.Redirect("AskQuestion.aspx");
+      }
+      else
+      {
+        Response.Redirect("Default.aspx");
+      }
+    }
 
-		void totalQuestions_SubmitAction(object sender, EventArgs e)
-		{
-			Response.Redirect("AskQuestion.aspx");
-		}
+    void totalQuestions_SubmitAction(object sender, EventArgs e)
+    {
+      Response.Redirect("AskQuestion.aspx");
+    }
 
-		protected void Page_Load(object sender, EventArgs e)
-		{
-			if (totalQuestions.ExamMode)
-				return;
+    protected void Page_Load(object sender, EventArgs e)
+    {
+      if (totalQuestions.ExamMode)
+      {
+        return;
+      }
 
-			if (!IsPostBack)
-			{
-				QuizSessionData qd = CreateNewQuizSession();
+      if (!IsPostBack)
+      {
+        QuizSessionData qd = CreateNewQuizSession();
 
-				totalQuestions.SetStatusMessages(String.Format("out of {0}", qd.QuizData.Questions.Count), "starting point within the question list");
-			}
-			else
-			{
-				QuizSessionData qd = Session["QuizData"] as QuizSessionData;
+        totalQuestions.SetStatusMessages(string.Format("out of {0}", qd.QuizData.Questions.Count), "starting point within the question list");
+      }
+      else
+      {
+        QuizSessionData qd = Session["QuizData"] as QuizSessionData;
 
-				if (qd == null) qd = CreateNewQuizSession();
+        if (qd == null)
+        {
+          qd = CreateNewQuizSession();
+        }
 
-				qd.QuestionCount = totalQuestions.QuestionCount;
-				qd.QuestionOffset = totalQuestions.QuestionOffset;
-				qd.ShowAnswersButton = totalQuestions.ShowAnswerButton;
-			}
-		}
+        qd.QuestionCount = totalQuestions.QuestionCount;
+        qd.QuestionOffset = totalQuestions.QuestionOffset;
+        qd.ShowAnswersButton = totalQuestions.ShowAnswerButton;
+      }
+    }
 
-		protected QuizSessionData CreateNewQuizSession()
-		{
-			QuizSessionData qd = new QuizSessionData();
-			qd.QuizData = new Quiz(Server.MapPath(@"App_Data\questions.xml"));
-			qd.StudentData = new Student(qd.QuizData);
+    protected QuizSessionData CreateNewQuizSession()
+    {
+      QuizSessionData qd = new QuizSessionData();
+      qd.QuizData = new Quiz(Server.MapPath(@"App_Data\questions.xml"));
+      qd.StudentData = new Student(qd.QuizData);
 
-			Session["QuizData"] = qd;
+      Session["QuizData"] = qd;
 
-			return qd;
-		}
-	}
+      return qd;
+    }
+  }
 }
 

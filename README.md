@@ -1,6 +1,10 @@
-﻿This is a small exam prep web application for multiple choice questions written in C# and ASP.NET. 
+﻿This is a small exam prep web application for multiple choice questions written
+in C# and ASP.NET.
 
-Open it up in Visual Studio 2012 Express for Web, edit App_Data/questions.xml to add your questions. Then run it. 
+This was born in January 2010 when I was studying for the Security+ exam.
+
+Open it up in Visual Studio, edit App_Data/questions.xml to add your questions. 
+Then run it. 
 
 Question format:
 
@@ -18,7 +22,7 @@ Question format:
 
 Frank Hale <frankhale@gmail.com>
 
-Date: 17 February 2013
+Updated Date: 12 October 2013
 
 License: GNU GPL version 3
 

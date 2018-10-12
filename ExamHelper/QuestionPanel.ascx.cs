@@ -23,29 +23,32 @@ using System.Collections.Generic;
 
 namespace ExamHelper
 {
-	public partial class QuestionPanel : System.Web.UI.UserControl
-	{
-		public void SetQuestionText(string text)
-		{
-			questionText.Text = text;
-		}
+  public partial class QuestionPanel : System.Web.UI.UserControl
+  {
+    public void SetQuestionText(string text)
+    {
+      questionText.Text = text;
+    }
 
-		public void SetAnswers(List<Answer> answers)
-		{
-			answerList.Items.Clear();
-			answers.ForEach(a => answerList.Items.Add(a.Text));
-		}
+    public void SetAnswers(List<Answer> answers)
+    {
+      answerList.Items.Clear();
+      answers.ForEach(a => answerList.Items.Add(a.Text));
+    }
 
-		public int[] GetSelectedAnswers()
-		{
-			List<int> s = new List<int>();
+    public int[] GetSelectedAnswers()
+    {
+      List<int> s = new List<int>();
 
-			for (int i = 0; i < answerList.Items.Count; i++)
-			{
-				if (answerList.Items[i].Selected) s.Add(i);
-			}
+      for (int i = 0; i < answerList.Items.Count; i++)
+      {
+        if (answerList.Items[i].Selected)
+        {
+          s.Add(i);
+        }
+      }
 
-			return s.ToArray();
-		}
-	}
+      return s.ToArray();
+    }
+  }
 }

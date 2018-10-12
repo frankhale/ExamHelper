@@ -26,98 +26,107 @@ using System.Web;
 
 namespace ExamHelper
 {
-	public partial class AskQuestion : System.Web.UI.Page
-	{
-		protected void Page_Init(object sender, EventArgs e)
-		{
-			Response.Cache.SetExpires(DateTime.Now.AddDays(-1));
-			Response.Cache.SetCacheability(HttpCacheability.NoCache);
-			Response.Cache.SetNoStore();
-		}
+  public partial class AskQuestion : System.Web.UI.Page
+  {
+    protected void Page_Init(object sender, EventArgs e)
+    {
+      Response.Cache.SetExpires(DateTime.Now.AddDays(-1));
+      Response.Cache.SetCacheability(HttpCacheability.NoCache);
+      Response.Cache.SetNoStore();
+    }
 
-		protected void Page_Load(object sender, EventArgs e)
-		{
-			if (scriptManager.IsInAsyncPostBack) return;
+    protected void Page_Load(object sender, EventArgs e)
+    {
+      if (scriptManager.IsInAsyncPostBack)
+      {
+        return;
+      }
 
-			if (Session["QuizData"] == null)
-				Response.Redirect("Default.aspx");
+      if (Session["QuizData"] == null)
+      {
+        Response.Redirect("Default.aspx");
+      }
 
-			QuizSessionData qd = Session["QuizData"] as QuizSessionData;
+      QuizSessionData qd = Session["QuizData"] as QuizSessionData;
 
-			if (qd.ExamMode)
-			{
-				if (!qd.Initialized)
-				{
-					qd.StudentData.InitializeExamMode();
-					qd.Initialized = true;
-				}
+      if (qd.ExamMode)
+      {
+        if (!qd.Initialized)
+        {
+          qd.StudentData.InitializeExamMode();
+          qd.Initialized = true;
+        }
 
-				StatusLabel.Text = String.Format("Exam Mode | Total Questions = {0}", qd.StudentData.Questions.Count());
-			}
-			else
-			{
-				if (qd.StudentData.IsOffsetAndCountValid(qd.QuestionOffset, qd.QuestionCount))
-				{
-					qd.StudentData.InitializeStudyMode(qd.QuestionCount, qd.QuestionOffset);
-					qd.Initialized = true;
-				}
-				else
-				{
-					StatusLabel.Text = "Please check your question offset and count to make sure they are valid.";
-					Session["QuizData"] = null;
-					return;
-				}
+        StatusLabel.Text = string.Format("Exam Mode | Total Questions = {0}", qd.StudentData.Questions.Count());
+      }
+      else
+      {
+        if (qd.StudentData.IsOffsetAndCountValid(qd.QuestionOffset, qd.QuestionCount))
+        {
+          qd.StudentData.InitializeStudyMode(qd.QuestionCount, qd.QuestionOffset);
+          qd.Initialized = true;
+        }
+        else
+        {
+          StatusLabel.Text = "Please check your question offset and count to make sure they are valid.";
+          Session["QuizData"] = null;
+          return;
+        }
 
-				StatusLabel.Text = String.Format("{0} out of {1} starting at {2}", qd.QuestionCount.ToString(), qd.QuizData.Questions.Count, qd.QuestionOffset);
-			}
+        StatusLabel.Text = string.Format("{0} out of {1} starting at {2}", qd.QuestionCount.ToString(), qd.QuizData.Questions.Count, qd.QuestionOffset);
+      }
 
-			if (qd.CurrentQuestion != null)
-			{
-				if (qd.CompletedQuestionList == null)
-					qd.CompletedQuestionList = new List<CompletedQuestion>();
+      if (qd.CurrentQuestion != null)
+      {
+        if (qd.CompletedQuestionList == null)
+        {
+          qd.CompletedQuestionList = new List<CompletedQuestion>();
+        }
 
-				qd.CompletedQuestionList.Add(new CompletedQuestion(qd.CurrentQuestion, questionPanel.GetSelectedAnswers()));
-			}
+        qd.CompletedQuestionList.Add(new CompletedQuestion(qd.CurrentQuestion, questionPanel.GetSelectedAnswers()));
+      }
 
-			Question q = qd.StudentData.NextQuestion();
+      Question q = qd.StudentData.NextQuestion();
 
-			if (q != null)
-			{
-				qd.CurrentQuestion = q;
+      if (q != null)
+      {
+        qd.CurrentQuestion = q;
 
-				questionPanel.SetQuestionText(q.Text);
-				questionPanel.SetAnswers(q.Answers);
-				questionPanel.Visible = true;
+        questionPanel.SetQuestionText(q.Text);
+        questionPanel.SetAnswers(q.Answers);
+        questionPanel.Visible = true;
 
-				if (qd.ShowAnswersButton)
-				{
-					updatePanel.Visible = true;
-					answerButton.Text = "Show Answer";
-					answerLabel.Text = String.Empty;
-				}
+        if (qd.ShowAnswersButton)
+        {
+          updatePanel.Visible = true;
+          answerButton.Text = "Show Answer";
+          answerLabel.Text = string.Empty;
+        }
 
-				StatusLabel.Text += String.Format(" | Current question: {0} | <a href=\"Default.aspx\">Start Over</a> | <a href=\"Summary.aspx\">End and View Summary</a> ", qd.StudentData.currentQuestionIndex.ToString());
-			}
-			else
-				Response.Redirect("Summary.aspx");
-		}
+        StatusLabel.Text += string.Format(" | Current question: {0} | <a href=\"Default.aspx\">Start Over</a> | <a href=\"Summary.aspx\">End and View Summary</a> ", qd.StudentData.currentQuestionIndex.ToString());
+      }
+      else
+      {
+        Response.Redirect("Summary.aspx");
+      }
+    }
 
-		protected void answerButton_Click(object sender, EventArgs e)
-		{
-			if (answerLabel.Text.Length > 0)
-			{
-				answerLabel.Text = String.Empty;
+    protected void answerButton_Click(object sender, EventArgs e)
+    {
+      if (answerLabel.Text.Length > 0)
+      {
+        answerLabel.Text = string.Empty;
 
-				answerButton.Text = "Show Answer";
-			}
-			else if (Session["QuizData"] != null)
-			{
-				QuizSessionData qd = Session["QuizData"] as QuizSessionData;
+        answerButton.Text = "Show Answer";
+      }
+      else if (Session["QuizData"] != null)
+      {
+        QuizSessionData qd = Session["QuizData"] as QuizSessionData;
 
-				answerLabel.Text = String.Join(" | ", qd.CurrentQuestion.Answers.Where(a => a.Correct == true).Select(a => a.Text).ToArray());
+        answerLabel.Text = string.Join(" | ", qd.CurrentQuestion.Answers.Where(a => a.Correct == true).Select(a => a.Text).ToArray());
 
-				answerButton.Text = "Hide Answer";
-			}
-		}
-	}
+        answerButton.Text = "Hide Answer";
+      }
+    }
+  }
 }

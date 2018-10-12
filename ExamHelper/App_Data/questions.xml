@@ -24,7 +24,7 @@
   </question>
 	
 	<question>
-		<text>Is Visual Basic a crappy language?</text>
+		<text>Is Visual Basic 6 a crappy language?</text>
 		<answers>
 			<answer correct="true">Yes</answer>
 			<answer correct="false">No</answer>
@@ -34,8 +34,8 @@
 	<question>
 		<text>What is 1 + 1</text>
 		<answers>
-			<answer correct="false">-2</answer>
-			<answer correct="false">8</answer>
+			<answer correct="false">3</answer>
+			<answer correct="false">4</answer>
 			<answer correct="true">2</answer>
 			<answer correct="false">5</answer>
 		</answers>

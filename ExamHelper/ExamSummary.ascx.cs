@@ -27,49 +27,55 @@ using System.Web.UI.WebControls;
 
 namespace ExamHelper
 {
-	public partial class ExamSummary : System.Web.UI.UserControl
-	{
-		public void SetData(List<QuestionSummary> questionSummary)
-		{
-			Session["Summary"] = questionSummary;
+  public partial class ExamSummary : System.Web.UI.UserControl
+  {
+    public void SetData(List<QuestionSummary> questionSummary)
+    {
+      Session["Summary"] = questionSummary;
 
-			summaryRepeater.DataSource = questionSummary;
-			summaryRepeater.DataBind();
-		}
+      summaryRepeater.DataSource = questionSummary;
+      summaryRepeater.DataBind();
+    }
 
-		protected void summaryRepeater_ItemDataBound(object sender, System.Web.UI.WebControls.RepeaterItemEventArgs e)
-		{
-			Label res = e.Item.FindControl("ResultLabel") as Label;
+    protected void summaryRepeater_ItemDataBound(object sender, System.Web.UI.WebControls.RepeaterItemEventArgs e)
+    {
+      Label res = e.Item.FindControl("ResultLabel") as Label;
 
-			if (res.Text == "Correct")
-				res.CssClass = "positiveResult";
-			else if (res.Text == "Wrong")
-				res.CssClass = "negativeResult";
-		}
+      if (res.Text == "Correct")
+      {
+        res.CssClass = "positiveResult";
+      }
+      else if (res.Text == "Wrong")
+      {
+        res.CssClass = "negativeResult";
+      }
+    }
 
-		protected void downloadResults_Click(object sender, EventArgs e)
-		{
-			List<QuestionSummary> Summary = Session["Summary"] as List<QuestionSummary>;
+    protected void downloadResults_Click(object sender, EventArgs e)
+    {
+      List<QuestionSummary> Summary = Session["Summary"] as List<QuestionSummary>;
 
-			StringBuilder data = new StringBuilder();
+      StringBuilder data = new StringBuilder();
 
-			data.AppendLine("Num,Result,Correct Answer, Question");
+      data.AppendLine("Num,Result,Correct Answer, Question");
 
-			Summary.ForEach(q => data.AppendLine(String.Format("{0},{1},{2},{3}", q.ID, q.Result, q.CorrectAnswer.Trim().Replace(",", ";"), q.Text.Trim().Replace("\n", "").Replace(",", ";"))));
+      Summary.ForEach(q => data.AppendLine(string.Format("{0},{1},{2},{3}", q.ID, q.Result, q.CorrectAnswer.Trim().Replace(",", ";"), q.Text.Trim().Replace("\n", "").Replace(",", ";"))));
 
-			Response.Clear();
+      Response.Clear();
 
-			if (UseExcel.Checked)
-			{
-				Response.AddHeader("Content-Disposition", "attachment; filename=results.csv");
-				Response.ContentType = "text/csv";
-			}
-			else
-				Response.ContentType = "text/plain";
+      if (UseExcel.Checked)
+      {
+        Response.AddHeader("Content-Disposition", "attachment; filename=results.csv");
+        Response.ContentType = "text/csv";
+      }
+      else
+      {
+        Response.ContentType = "text/plain";
+      }
 
-			Response.Write(data.ToString());
-			Response.Flush();
-			Response.End();
-		}
-	}
+      Response.Write(data.ToString());
+      Response.Flush();
+      Response.End();
+    }
+  }
 }
