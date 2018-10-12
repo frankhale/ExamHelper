@@ -21,60 +21,59 @@
 
 
 using System;
-using System.Web.Services;
 
 namespace ExamHelper
 {
-	public partial class PickTotalQuestions : System.Web.UI.UserControl
-	{
-		public delegate void SubmitActionDelegate(object sender, EventArgs e);
-		public delegate void CheckBoxSelectionChangedActionDelegate(object sender, EventArgs e);
+  public partial class PickTotalQuestions : System.Web.UI.UserControl
+  {
+    public delegate void SubmitActionDelegate(object sender, EventArgs e);
+    public delegate void CheckBoxSelectionChangedActionDelegate(object sender, EventArgs e);
 
-		public event SubmitActionDelegate SubmitAction;
-		public event CheckBoxSelectionChangedActionDelegate CheckBoxSelectionChangedAction;
+    public event SubmitActionDelegate SubmitAction;
+    public event CheckBoxSelectionChangedActionDelegate CheckBoxSelectionChangedAction;
 
-		public bool ShowAnswerButton { get { return displayShowAnswerButton.Checked; } }
+    public bool ShowAnswerButton { get { return displayShowAnswerButton.Checked; } }
 
-		public void SetStatusMessages(string msg1, string msg2)
-		{
-			infoLabel1.Text = msg1;
-			infoLabel2.Text = msg2;
-		}
+    public void SetStatusMessages(string msg1, string msg2)
+    {
+      infoLabel1.Text = msg1;
+      infoLabel2.Text = msg2;
+    }
 
-		public bool ExamMode { get { return examModeCheckBox.Checked; } }
+    public bool ExamMode { get { return examModeCheckBox.Checked; } }
 
-		public int QuestionCount
-		{
-			get
-			{
-				int count = 0;
+    public int QuestionCount
+    {
+      get
+      {
+        int count = 0;
 
-				Int32.TryParse(questionCount.Text, out count);
+        int.TryParse(questionCount.Text, out count);
 
-				return count;
-			}
-		}
+        return count;
+      }
+    }
 
-		public int QuestionOffset
-		{
-			get
-			{
-				int offset = 0;
+    public int QuestionOffset
+    {
+      get
+      {
+        int offset = 0;
 
-				Int32.TryParse(questionOffset.Text, out offset);
+        int.TryParse(questionOffset.Text, out offset);
 
-				return offset;
-			}
-		}
+        return offset;
+      }
+    }
 
-		protected void submit_Click(object sender, EventArgs e)
-		{
-			SubmitAction(sender, e);
-		}
+    protected void submit_Click(object sender, EventArgs e)
+    {
+      SubmitAction(sender, e);
+    }
 
-		protected void examModeCheckBox_CheckedChanged(object sender, EventArgs e)
-		{
-			CheckBoxSelectionChangedAction(sender, e);
-		}
-	}
+    protected void examModeCheckBox_CheckedChanged(object sender, EventArgs e)
+    {
+      CheckBoxSelectionChangedAction(sender, e);
+    }
+  }
 }
